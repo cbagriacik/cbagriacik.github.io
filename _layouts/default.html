@@ -21,6 +21,10 @@
   <link rel="icon" href="{{ site.avatar }}?size=64" type="image/png">
   <link rel="alternate" type="application/atom+xml" title="{{ site.title }} — CVEs" href="{{ '/cves.xml' | relative_url }}">
   {% include jsonld-person.html %}
+  {%- assign gc = site.goatcounter_code | default: '' | strip -%}
+  {%- if jekyll.environment == 'production' and gc != '' %}
+  <script data-goatcounter="https://{{ gc }}.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+  {%- endif %}
 </head>
 <body>
   <a class="skip" href="#main">{{ t.skip }}</a>

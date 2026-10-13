@@ -18,6 +18,10 @@ linkedin_username: cbagriacik
 avatar: https://github.com/cbagriacik.png
 email: coskun.bagriacik@gmail.com
 
+# Cookieless analytics (GoatCounter). Set this to your subdomain code, e.g. "cbagriacik"
+# for https://cbagriacik.goatcounter.com. Loads only in production, skips localhost.
+goatcounter_code: "cbagriacik"
+
 # Used by jekyll-seo-tag and by _includes/jsonld-person.html (sameAs).
 # Add more profile URLs (X, Mastodon, ...) here when you want them linked.
 social:
