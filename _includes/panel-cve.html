@@ -1,20 +1,25 @@
 {%- comment -%}
   Cross-reference windows for a CVE page. Rendered twice: in the right panel (wide screens)
-  and after the article (include.inline, below 1180px where the panel is hidden).
+  and after the article (below 1180px, where the panel is hidden). Facts come from the English entry.
 {%- endcomment -%}
-{%- assign same_product = site.cves | where: "product", page.product | sort: "date" | reverse -%}
-{%- assign same_impact = site.cves | where: "impact", page.impact -%}
-{%- assign day = page.date | date: '%Y-%m-%d' -%}
-{%- capture batch -%}{% for c in site.cves %}{% assign d = c.date | date: '%Y-%m-%d' %}{% if d == day and c.url != page.url %}<li><a class="x" href="{{ c.url | relative_url }}">{{ c.cve }}</a><span>{{ site.data.mnemonics[c.impact] | default: '' }}</span></li>{% endif %}{% endfor %}{%- endcapture -%}
-{%- capture kp %}{% include xref-key.html kind='p' value=page.product %}{% endcapture -%}
-{%- capture ki %}{% include xref-key.html kind='i' value=page.impact %}{% endcapture -%}
+{%- assign lang = page.lang | default: site.lang -%}
+{%- assign t = site.data.i18n[lang] -%}
+{%- assign m = site.cves | where: "cve", page.cve | where: "lang", "en" | first -%}
+{%- unless m %}{% assign m = page %}{% endunless -%}
+{%- assign en_cves = site.cves | where: "lang", "en" -%}
+{%- assign same_product = en_cves | where: "product", m.product -%}
+{%- assign same_impact = en_cves | where: "impact", m.impact -%}
+{%- assign day = m.date | date: '%Y-%m-%d' -%}
+{%- capture batch -%}{% for c in en_cves %}{% assign d = c.date | date: '%Y-%m-%d' %}{% if d == day and c.cve != m.cve %}{% assign href = c.url %}{% if lang != 'en' %}{% assign tr_doc = site.cves | where: "cve", c.cve | where: "lang", lang | first %}{% if tr_doc %}{% assign href = tr_doc.url %}{% endif %}{% endif %}<li><a class="x" href="{{ href | relative_url }}">{{ c.cve }}</a><span>{{ site.data.mnemonics[c.impact] | default: '' }}</span></li>{% endif %}{% endfor %}{%- endcapture -%}
+{%- capture kp %}{% include xref-key.html kind='p' value=m.product %}{% endcapture -%}
+{%- capture ki %}{% include xref-key.html kind='i' value=m.impact %}{% endcapture -%}
 <h2 class="wt">Xrefs to</h2>
 <ul class="xl">
-  <li><a class="x" href="{{ '/#f-' | append: kp | strip | relative_url }}">{{ page.product }}</a><span>{{ same_product.size }}</span></li>
-  {% if page.impact %}<li><a class="x" href="{{ '/#f-' | append: ki | strip | relative_url }}" title="{{ page.impact }}">{{ site.data.mnemonics[page.impact] | default: page.impact }}</a><span>{{ same_impact.size }}</span></li>{% endif %}
+  <li><a class="x" href="{{ t.home | append: '#f-' | append: kp | strip | relative_url }}">{{ m.product }}</a><span>{{ same_product.size }}</span></li>
+  {% if m.impact %}<li><a class="x" href="{{ t.home | append: '#f-' | append: ki | strip | relative_url }}" title="{{ m.impact }}">{{ site.data.mnemonics[m.impact] | default: m.impact }}</a><span>{{ same_impact.size }}</span></li>{% endif %}
 </ul>
 {% if batch != "" %}
-<h2 class="wt">Same release</h2>
+<h2 class="wt">{{ t.same_release }}</h2>
 <ul class="xl">{{ batch }}</ul>
 {% endif %}
 {% include names.html html=include.html %}

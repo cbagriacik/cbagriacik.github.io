@@ -1,15 +1,17 @@
-{%- assign sorted = site.cves | sort: "date" | reverse -%}
+{%- assign lang = page.lang | default: site.lang -%}
+{%- assign t = site.data.i18n[lang] -%}
+{%- assign sorted = site.cves | where: "lang", "en" | sort: "date" | reverse -%}
 {%- assign by_product = sorted | group_by: "product" | sort: "size" | reverse -%}
 {%- assign by_impact = sorted | group_by: "impact" | sort: "size" | reverse -%}
 {%- assign by_year = sorted | group_by_exp: "c", "c.date | date: '%Y'" | sort: "name" | reverse -%}
-{% if site.cves.size > 0 %}
+{% if sorted.size > 0 %}
 <h2 class="wt">Xrefs · product</h2>
-<ul class="xl">{% for g in by_product %}{% capture k %}{% include xref-key.html kind='p' value=g.name %}{% endcapture %}<li><a class="x" href="{{ '/#f-' | append: k | strip | relative_url }}">{{ g.name }}</a><span>{{ g.size }}</span></li>{% endfor %}</ul>
+<ul class="xl">{% for g in by_product %}{% capture k %}{% include xref-key.html kind='p' value=g.name %}{% endcapture %}<li><a class="x" href="{{ t.home | append: '#f-' | append: k | strip | relative_url }}">{{ g.name }}</a><span>{{ g.size }}</span></li>{% endfor %}</ul>
 <h2 class="wt">Xrefs · impact</h2>
-<ul class="xl">{% for g in by_impact %}{% capture k %}{% include xref-key.html kind='i' value=g.name %}{% endcapture %}<li><a class="x" href="{{ '/#f-' | append: k | strip | relative_url }}" title="{{ g.name }}">{{ site.data.mnemonics[g.name] | default: g.name }}</a><span>{{ g.size }}</span></li>{% endfor %}</ul>
+<ul class="xl">{% for g in by_impact %}{% capture k %}{% include xref-key.html kind='i' value=g.name %}{% endcapture %}<li><a class="x" href="{{ t.home | append: '#f-' | append: k | strip | relative_url }}" title="{{ g.name }}">{{ site.data.mnemonics[g.name] | default: g.name }}</a><span>{{ g.size }}</span></li>{% endfor %}</ul>
 <h2 class="wt">Segments</h2>
-<ul class="xl">{% for g in by_year %}<li><a class="x" href="{{ '/#f-y-' | append: g.name | relative_url }}">.ack {{ g.name }}</a><span>{{ g.size }}</span></li>{% endfor %}</ul>
+<ul class="xl">{% for g in by_year %}<li><a class="x" href="{{ t.home | append: '#f-y-' | append: g.name | relative_url }}">.ack {{ g.name }}</a><span>{{ g.size }}</span></li>{% endfor %}</ul>
 {% else %}
 <h2 class="wt">Xrefs</h2>
-<p class="c">; none yet</p>
+<p class="c">; —</p>
 {% endif %}

@@ -60,6 +60,14 @@ aside.side { background: var(--pane); border-right: 1px solid var(--rule); paddi
 .fn a span { color: var(--addr); font-size: 12px; }
 .fn a:hover { background: rgba(124,183,255,.07); }
 .fn a.on { background: rgba(255,233,77,.08); border-left-color: var(--hl); color: var(--hl); }
+/* Language switch: last row of the Functions window */
+.fn .langs { display: flex; align-items: center; gap: .45rem; padding: .9rem 1.5rem 0; font: 500 13px/1.5 var(--mono); color: var(--addr); }
+.fn .langs a { display: inline; padding: 0; border: 0; color: var(--name); }
+.fn .langs a:hover { color: var(--hl); background: none; }
+.fn .langs b { color: var(--hl); font-weight: 700; }
+.fn .langs i { font-style: normal; color: var(--rule-hi); }
+.lang-tag { font: 600 10.5px/1 var(--mono); letter-spacing: .06em; color: var(--bg); background: var(--cmt); border-radius: 3px; padding: .15em .4em; margin-left: .35rem; vertical-align: .1em; }
+
 .side .soc { margin-top: auto; padding: 0 1.5rem; font: 12px/1.9 var(--mono); }
 
 /* ---------- Listing ---------- */
@@ -208,6 +216,7 @@ aside.panel .wt, .panel-inline .wt { font: 500 11px/1 var(--mono); letter-spacin
   .fn a { border-left: 0; border-bottom: 2px solid transparent; padding: .6rem 1rem; }
   .fn a.on { border-bottom-color: var(--hl); }
   .fn a span { display: none; }
+  .fn .langs { margin-left: auto; padding: .6rem 1rem; }
   main { padding: 1.75rem 1rem 2.5rem; }
   .ln, .card, .empty { grid-template-columns: minmax(0, 1fr); }
   main > .ln:first-child > .c { display: none; }

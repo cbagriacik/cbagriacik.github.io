@@ -1,0 +1,73 @@
+---
+layout: default
+---
+{%- assign lang = page.lang | default: site.lang -%}
+{%- assign t = site.data.i18n[lang] -%}
+{%- assign cves = site.cves | where: "lang", "en" | sort: "date" | reverse -%}
+{%- assign posts = site.posts | where: "lang", lang -%}
+{%- assign projects = site.projects | sort: "order" -%}
+
+<div class="ln"><span class="a">.text:0000</span><span class="c">; =============== S U B R O U T I N E ===============</span></div>
+<div class="ln"><span class="a"></span><h1 class="proc">{{ site.author.name }}<small>proc near</small></h1></div>
+<div class="ln"><span class="a">.text:0001</span><p class="role">{{ t.role }}</p></div>
+<div class="ln"><span class="a">.text:0002</span><span class="c">; DATA XREF: <a class="x" href="https://github.com/{{ site.github_username }}" target="_blank" rel="me noopener">github.com/{{ site.github_username }} ↗</a>  <a class="x" href="https://www.linkedin.com/in/{{ site.linkedin_username }}/" target="_blank" rel="me noopener">linkedin.com/in/{{ site.linkedin_username }} ↗</a></span></div>
+
+{% include navband.html cves=cves %}
+
+{%- comment -%}
+  Xref filters without JavaScript: the xref windows link to <home>#f-<key>; a zero-height target with that id
+  sits above the CVE list, and :has(:target) hides every card whose data-f lacks the key.
+{%- endcomment -%}
+{%- capture fl -%}{% for c in cves %}{% assign yr = c.date | date: '%Y' %}{% capture kp %}{% include xref-key.html kind='p' value=c.product %}{% endcapture %}{% capture ki %}{% include xref-key.html kind='i' value=c.impact %}{% endcapture %}{{ kp | strip }}|{{ c.product }};;{{ ki | strip }}|{{ site.data.mnemonics[c.impact] | default: c.impact }};;y-{{ yr }}|.ack {{ yr }};;{% endfor %}{%- endcapture -%}
+{%- assign filters = fl | split: ';;' | uniq -%}
+{% if cves.size > 0 %}<style>
+{%- for f in filters %}{% assign k = f | split: '|' | first %}
+main:has(#f-{{ k }}:target) .card[data-f]:not([data-f~="{{ k }}"]) { display: none; }
+main:has(#f-{{ k }}:target) .fstat-{{ k }} { display: grid; }
+body:has(#f-{{ k }}:target) .xl a[href$="#f-{{ k }}"] { color: var(--hl); }
+{%- endfor %}
+</style>
+{% for f in filters %}<span class="ftarget" id="f-{{ f | split: '|' | first }}"></span>{% endfor %}{% endif %}
+<h2 class="banner" id="cves"><b>{{ t.banner_cves }}</b><em>{{ cves.size }} {% if cves.size == 1 %}{{ t.entry }}{% else %}{{ t.entries }}{% endif %} · MSRC</em></h2>
+{% for f in filters %}{% assign k = f | split: '|' | first %}{% assign label = f | split: '|' | last %}{% assign needle = k | append: '|' %}{% assign n = fl | split: needle | size | minus: 1 %}
+<div class="ln fstat fstat-{{ k }}"><span class="a">.xref</span><span class="c">; {{ t.filter }} <b>{{ label }}</b> — {{ n }} {{ t.of }} {{ cves.size }} · <a class="x" href="#cves">{{ t.clear }}</a></span></div>{% endfor %}
+{% if cves.size > 0 %}
+  {% for c in cves %}{% include cve-card.html c=c %}{% endfor %}
+{% else %}
+  <div class="empty"><span class="a">.ack:0000</span><span class="c">; {{ t.empty_cves }}</span></div>
+{% endif %}
+
+<h2 class="banner" id="blog"><b>{{ t.banner_blog }}</b>{% if posts.size > 0 %}<em>{{ posts.size }} {{ t.posts }}</em>{% endif %}</h2>
+{% if posts.size > 0 %}
+  {% for p in posts %}
+  <a class="card" href="{{ p.url | relative_url }}">
+    <span class="a">.blog:{{ p.date | date: '%Y-%m-%d' }}</span>
+    <div>
+      <h3>{{ p.title }}</h3>
+      {% if p.description %}<p class="excerpt">{{ p.description }}</p>{% endif %}
+    </div>
+  </a>
+  {% endfor %}
+{% else %}
+  <div class="empty"><span class="a">.blog:0000</span><span class="c">; {{ t.empty_blog }}</span></div>
+{% endif %}
+
+<h2 class="banner" id="projects"><b>{{ t.banner_projects }}</b>{% if projects.size > 0 %}<em>{{ projects.size }}</em>{% endif %}</h2>
+{% if projects.size > 0 %}
+  {% for p in projects %}
+  {%- assign pdesc = p.description -%}
+  {%- if lang == 'tr' and p.description_tr %}{% assign pdesc = p.description_tr %}{% endif -%}
+  <a class="card" href="{{ p.link }}" target="_blank" rel="noopener">
+    <span class="a">.proj:{{ forloop.index | prepend: '0000' | slice: -4, 4 }}</span>
+    <div>
+      <h3>{{ p.title }} <span class="ext">↗</span></h3>
+      {% if pdesc %}<p class="excerpt">{{ pdesc }}</p>{% endif %}
+      {% if p.stack %}<div class="ins"><span class="op">use</span><span class="arg">{{ p.stack }}</span></div>{% endif %}
+    </div>
+  </a>
+  {% endfor %}
+{% else %}
+  <div class="empty"><span class="a">.proj:0000</span><span class="c">; {{ t.empty_projects }}</span></div>
+{% endif %}
+
+{% include endp.html label=site.author.name %}

@@ -1,51 +1,56 @@
 ---
 layout: default
 ---
-{%- capture advisory %}{% include advisory-url.html %}{% endcapture -%}
+{%- assign lang = page.lang | default: site.lang -%}
+{%- assign t = site.data.i18n[lang] -%}
+{%- comment -%} Facts come from the English entry; a translation only carries its own text. {%- endcomment -%}
+{%- assign m = site.cves | where: "cve", page.cve | where: "lang", "en" | first -%}
+{%- unless m %}{% assign m = page %}{% endunless -%}
+{%- capture advisory %}{% if m.advisory %}{{ m.advisory }}{% elsif m.vendor == 'Microsoft' %}https://msrc.microsoft.com/update-guide/vulnerability/{{ m.cve }}{% endif %}{% endcapture -%}
 {%- assign advisory = advisory | strip -%}
 {%- assign body = content | strip_html | strip -%}
-{%- assign op = site.data.mnemonics[page.impact] -%}
 
-<div class="ln"><span class="a">.ack:{{ page.date | date: '%Y-%m-%d' }}</span><span class="crumb"><a href="{{ '/#cves' | relative_url }}">cves</a> <span class="c">→</span> <span class="c">{{ page.cve }}</span></span></div>
-<div class="ln"><span class="a"></span><h1 class="cve-id"><span class="hl">{{ page.cve }}</span></h1></div>
-{% if page.vendor_title %}<div class="ln"><span class="a">.text:0001</span><p class="vt">{{ page.vendor_title }}</p></div>{% endif %}
+<div class="ln"><span class="a">.ack:{{ m.date | date: '%Y-%m-%d' }}</span><span class="crumb"><a href="{{ t.home | append: '#cves' | relative_url }}">cves</a> <span class="c">→</span> <span class="c">{{ m.cve }}</span></span></div>
+<div class="ln"><span class="a"></span><h1 class="cve-id"><span class="hl">{{ m.cve }}</span></h1></div>
+{% if m.vendor_title %}<div class="ln"><span class="a">.text:0001</span><p class="vt">{{ m.vendor_title }}</p></div>{% endif %}
 
 <div class="ln"><span class="a"></span>
   <div>
-    {% if page.demo %}<p class="demo-note">; DEMO — impact, severity and CVSS below are the values filed in the report, not yet the vendor advisory's.</p>{% endif %}
+    {% if m.demo %}<p class="demo-note">; {{ t.demo_note }}</p>{% endif %}
     <dl class="regs">
-      {% if page.impact %}<div><dt>Impact</dt><dd>{{ page.impact }}</dd></div>{% endif %}
-      <div><dt>Severity</dt><dd>{% if page.severity %}<span class="sev sev-{{ page.severity | downcase }}">{{ page.severity }}</span>{% else %}<span class="c">; pending</span>{% endif %}</dd></div>
-      {% if page.cvss %}<div><dt>CVSS 3.1</dt><dd>{{ page.cvss }}</dd></div>{% endif %}
-      {% if page.cwe %}<div><dt>Weakness</dt><dd><a class="x" href="https://cwe.mitre.org/data/definitions/{{ page.cwe | remove: 'CWE-' }}.html" target="_blank" rel="noopener">{{ page.cwe }} ↗</a></dd></div>{% endif %}
-      {% if page.component %}<div><dt>Component</dt><dd>{{ page.component }}</dd></div>{% endif %}
-      <div><dt>Published</dt><dd><time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: '%Y-%m-%d' }}</time></dd></div>
+      {% if m.impact %}<div><dt>{{ t.impact }}</dt><dd>{{ m.impact }}</dd></div>{% endif %}
+      <div><dt>{{ t.severity }}</dt><dd>{% if m.severity %}<span class="sev sev-{{ m.severity | downcase }}">{{ m.severity }}</span>{% else %}<span class="c">; {{ t.pending }}</span>{% endif %}</dd></div>
+      {% if m.cvss %}<div><dt>CVSS 3.1</dt><dd>{{ m.cvss }}</dd></div>{% endif %}
+      {% if m.cwe %}<div><dt>{{ t.weakness }}</dt><dd><a class="x" href="https://cwe.mitre.org/data/definitions/{{ m.cwe | remove: 'CWE-' }}.html" target="_blank" rel="noopener">{{ m.cwe }} ↗</a></dd></div>{% endif %}
+      {% if m.component %}<div><dt>{{ t.component }}</dt><dd>{{ m.component }}</dd></div>{% endif %}
+      <div><dt>{{ t.published }}</dt><dd><time datetime="{{ m.date | date_to_xmlschema }}">{{ m.date | date: '%Y-%m-%d' }}</time></dd></div>
     </dl>
-    <p class="credit">Acknowledged in the {{ page.vendor }} advisory as <b>{{ page.credit | default: site.author.name }}</b>.{% if page.shared_credit %} Other researchers are credited on the same CVE.{% endif %}</p>
+    <p class="credit">{% if t.credit_pre != "" %}{{ t.credit_pre }} {% endif %}{{ m.vendor }} {{ t.credit_mid }} <b>{{ m.credit | default: site.author.name }}</b>{{ t.credit_post }}{% if m.shared_credit %} {{ t.shared }}{% endif %}</p>
     <ul class="xrefs-out">
-      {% if advisory != "" %}<li><a href="{{ advisory }}" target="_blank" rel="noopener">{{ page.vendor }} advisory ↗</a></li>{% endif %}
-      <li><a href="https://nvd.nist.gov/vuln/detail/{{ page.cve }}" target="_blank" rel="noopener">NVD ↗</a></li>
-      <li><a href="https://www.cve.org/CVERecord?id={{ page.cve }}" target="_blank" rel="noopener">CVE.org ↗</a></li>
+      {% if advisory != "" %}<li><a href="{{ advisory }}" target="_blank" rel="noopener">{{ m.vendor }} {{ t.advisory }} ↗</a></li>{% endif %}
+      <li><a href="https://nvd.nist.gov/vuln/detail/{{ m.cve }}" target="_blank" rel="noopener">NVD ↗</a></li>
+      <li><a href="https://www.cve.org/CVERecord?id={{ m.cve }}" target="_blank" rel="noopener">CVE.org ↗</a></li>
     </ul>
   </div>
 </div>
 
-<h2 class="banner"><b>WRITE-UP</b></h2>
+<h2 class="banner"><b>{{ t.banner_writeup }}</b></h2>
 {% if body != "" %}
 <div class="ln"><span class="a"></span>
-  <article class="prose">
+  <article class="prose" lang="{{ lang }}">
     {{ content | replace: '<a href="http', '<a target="_blank" rel="noopener" href="http' }}
   </article>
 </div>
-{% elsif page.writeup_ref %}
-{%- assign ref = site.cves | where: "cve", page.writeup_ref | first -%}
-<div class="empty"><span class="a">.ref:0000</span><span class="c">; same report as <a class="x" href="{{ ref.url | relative_url }}">{{ page.writeup_ref }}</a>; the write-up lives there</span></div>
+{% elsif m.writeup_ref %}
+{%- assign ref = site.cves | where: "cve", m.writeup_ref | where: "lang", lang | first -%}
+{%- unless ref %}{% assign ref = site.cves | where: "cve", m.writeup_ref | where: "lang", "en" | first %}{% endunless -%}
+<div class="empty"><span class="a">.ref:0000</span><span class="c">; {{ t.same_report }} <a class="x" href="{{ ref.url | relative_url }}">{{ m.writeup_ref }}</a>; {{ t.same_report_tail }}</span></div>
 {% else %}
-<div class="empty"><span class="a">.text:0000</span><span class="c">; unexplored — no write-up published for this CVE yet</span></div>
+<div class="empty"><span class="a">.text:0000</span><span class="c">; {{ t.empty_writeup }}</span></div>
 {% endif %}
 
 <aside class="panel-inline" aria-label="Cross references">
   {% include panel-cve.html html=content %}
 </aside>
 
-{% include endp.html label=page.cve %}
+{% include endp.html label=m.cve %}

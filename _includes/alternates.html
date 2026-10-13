@@ -1,0 +1,17 @@
+{%- comment -%}
+  Sets alt_en / alt_tr: the same page in each language, or "" when that language has no version.
+  Home pages always pair. A CVE pairs only when its Turkish translation (_cves/tr/<CVE-ID>.md) exists.
+{%- endcomment -%}
+{%- assign alt_en = "" -%}
+{%- assign alt_tr = "" -%}
+{%- if page.layout == 'home' -%}
+  {%- assign alt_en = site.data.i18n.en.home -%}
+  {%- assign alt_tr = site.data.i18n.tr.home -%}
+{%- elsif page.collection == 'cves' -%}
+  {%- assign pair_en = site.cves | where: "cve", page.cve | where: "lang", "en" | first -%}
+  {%- assign pair_tr = site.cves | where: "cve", page.cve | where: "lang", "tr" | first -%}
+  {%- if pair_en and pair_tr -%}
+    {%- assign alt_en = pair_en.url -%}
+    {%- assign alt_tr = pair_tr.url -%}
+  {%- endif -%}
+{%- endif -%}

@@ -1,7 +1,9 @@
 ---
 layout: default
 ---
-<div class="ln"><span class="a">.blog:{{ page.date | date: '%Y-%m-%d' }}</span><span class="crumb"><a href="{{ '/#blog' | relative_url }}">blog</a> <span class="c">→</span> <span class="c">{{ page.slug }}</span></span></div>
+{%- assign lang = page.lang | default: site.lang -%}
+{%- assign t = site.data.i18n[lang] -%}
+<div class="ln"><span class="a">.blog:{{ page.date | date: '%Y-%m-%d' }}</span><span class="crumb"><a href="{{ t.home | append: '#blog' | relative_url }}">blog</a> <span class="c">→</span> <span class="c">{{ page.slug }}</span></span></div>
 <div class="ln"><span class="a"></span><h1 class="post-title">{{ page.title }}</h1></div>
 {% if page.description %}<div class="ln"><span class="a">.text:0001</span><p class="vt">{{ page.description }}</p></div>{% endif %}
 

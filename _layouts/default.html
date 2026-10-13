@@ -1,11 +1,19 @@
+{%- assign lang = page.lang | default: site.lang -%}
+{%- assign t = site.data.i18n[lang] -%}
+{%- include alternates.html -%}
 <!doctype html>
-<html lang="{{ site.lang | default: 'en' }}">
+<html lang="{{ lang }}">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="dark">
   <meta name="theme-color" content="#1a1b1f">
   {% seo %}
+  {%- if alt_en != "" and alt_tr != "" %}
+  <link rel="alternate" hreflang="en" href="{{ alt_en | absolute_url }}">
+  <link rel="alternate" hreflang="tr" href="{{ alt_tr | absolute_url }}">
+  <link rel="alternate" hreflang="x-default" href="{{ alt_en | absolute_url }}">
+  {%- endif %}
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Mona+Sans:wght@400;500;700;800&display=swap">
@@ -15,7 +23,7 @@
   {% include jsonld-person.html %}
 </head>
 <body>
-  <a class="skip" href="#main">Skip to content</a>
+  <a class="skip" href="#main">{{ t.skip }}</a>
   <div class="app">
     {% include sidebar.html %}
     <main id="main">

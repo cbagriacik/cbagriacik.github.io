@@ -1,9 +1,12 @@
 ---
 layout: default
-title: Page not found
+title: Page not found · Sayfa bulunamadı
 permalink: /404.html
 sitemap: false
 ---
+{%- assign en = site.data.i18n.en -%}
+{%- assign tr = site.data.i18n.tr -%}
 <div class="ln"><span class="a">.text:????</span><span class="c">; jump target is not defined</span></div>
-<div class="ln"><span class="a"></span><h1 class="post-title">Page not found</h1></div>
-<div class="ln"><span class="a"></span><p class="vt">That address does not exist. The full list is on the <a class="x" href="{{ '/' | relative_url }}">home page</a>.</p></div>
+<div class="ln"><span class="a"></span><h1 class="post-title">{{ en.notfound_title }}</h1></div>
+<div class="ln"><span class="a"></span><p class="vt">{{ en.notfound_body }} <a class="x" href="{{ en.home | relative_url }}">{{ en.notfound_link }}</a>.</p></div>
+<div class="ln" lang="tr"><span class="a"></span><p class="vt">{{ tr.notfound_title }}. {{ tr.notfound_body }} <a class="x" href="{{ tr.home | relative_url }}">{{ tr.notfound_link }}</a>.</p></div>

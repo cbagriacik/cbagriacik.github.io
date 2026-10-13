@@ -1,17 +1,29 @@
-{%- assign n_cves = site.cves | size -%}
-{%- assign n_posts = site.posts | size -%}
+{%- assign lang = page.lang | default: site.lang -%}
+{%- assign t = site.data.i18n[lang] -%}
+{%- assign home = t.home -%}
+{%- assign en_cves = site.cves | where: "lang", "en" -%}
+{%- assign n_cves = en_cves | size -%}
+{%- assign n_posts = site.posts | where: "lang", lang | size -%}
 {%- assign n_proj = site.projects | size -%}
 {%- assign section = page.layout | default: 'home' -%}
+{%- include alternates.html -%}
+{%- assign go_en = alt_en | default: site.data.i18n.en.home -%}
+{%- assign go_tr = alt_tr | default: site.data.i18n.tr.home -%}
 <aside class="side">
-  <a class="brand" href="{{ '/' | relative_url }}">
+  <a class="brand" href="{{ home | relative_url }}">
     <img class="avatar" src="{{ site.avatar }}?size=80" width="40" height="40" alt="">
-    <span class="brand-text"><span class="who">{{ site.author.name }}</span><span class="what">{{ site.tagline }}</span></span>
+    <span class="brand-text"><span class="who">{{ site.author.name }}</span><span class="what">{{ t.role }}</span></span>
   </a>
   <div class="win-title" aria-hidden="true"><span>Functions</span><span>len</span></div>
   <nav class="fn" aria-label="Sections">
-    <a href="{{ '/#cves' | relative_url }}"{% if section == 'cve' %} class="on" aria-current="true"{% endif %}>cves <span>{{ n_cves | prepend: '0000' | slice: -4, 4 }}</span></a>
-    <a href="{{ '/#blog' | relative_url }}"{% if section == 'post' %} class="on" aria-current="true"{% endif %}>blog <span>{{ n_posts | prepend: '0000' | slice: -4, 4 }}</span></a>
-    <a href="{{ '/#projects' | relative_url }}">projects <span>{{ n_proj | prepend: '0000' | slice: -4, 4 }}</span></a>
+    <a href="{{ home | append: '#cves' | relative_url }}"{% if section == 'cve' %} class="on" aria-current="true"{% endif %}>cves <span>{{ n_cves | prepend: '0000' | slice: -4, 4 }}</span></a>
+    <a href="{{ home | append: '#blog' | relative_url }}"{% if section == 'post' %} class="on" aria-current="true"{% endif %}>blog <span>{{ n_posts | prepend: '0000' | slice: -4, 4 }}</span></a>
+    <a href="{{ home | append: '#projects' | relative_url }}">projects <span>{{ n_proj | prepend: '0000' | slice: -4, 4 }}</span></a>
+    <span class="langs" aria-label="Language">
+      {%- if lang == 'en' %}<b aria-current="true">en</b>{% else %}<a href="{{ go_en | relative_url }}" hreflang="en" lang="en">en</a>{% endif -%}
+      <i>|</i>
+      {%- if lang == 'tr' %}<b aria-current="true">tr</b>{% else %}<a href="{{ go_tr | relative_url }}" hreflang="tr" lang="tr">tr</a>{% endif -%}
+    </span>
   </nav>
   <div class="soc">
     <a class="x" href="https://github.com/{{ site.github_username }}" target="_blank" rel="me noopener">github.com/{{ site.github_username }} ↗</a><br>

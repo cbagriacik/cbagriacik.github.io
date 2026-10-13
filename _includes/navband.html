@@ -1,5 +1,7 @@
 {%- assign cves = include.cves -%}
-{%- assign n_posts = site.posts | size -%}
+{%- assign lang = page.lang | default: site.lang -%}
+{%- assign t = site.data.i18n[lang] -%}
+{%- assign n_posts = site.posts | where: "lang", lang | size -%}
 {%- assign n_proj = site.projects | size -%}
 {%- assign sevs = "Critical,Important,Moderate,Low" | split: "," -%}
 <div class="ln navband"><span class="a">.nav</span>
@@ -10,7 +12,7 @@
       {%- endfor %}
       {%- if n_posts > 0 %}<a href="#blog" class="seg seg-blog" title="blog · {{ n_posts }}"><span class="vh">blog</span></a>{% endif %}
       {%- if n_proj > 0 %}<a href="#projects" class="seg seg-proj" title="projects · {{ n_proj }}"><span class="vh">projects</span></a>{% endif %}
-      {%- if n_posts == 0 or n_proj == 0 %}<span class="unx" title="unexplored"></span>{% endif %}
+      {%- if n_posts == 0 or n_proj == 0 %}<span class="unx" title="{{ t.unexplored }}"></span>{% endif %}
     </nav>
     <div class="legend">
       {%- for s in sevs %}
@@ -18,8 +20,8 @@
         {%- if k > 0 %}<span><i class="sev-bg-{{ s | downcase }}"></i>{{ s }} {{ k }}</span>{% endif -%}
       {%- endfor %}
       {%- assign unrated = cves | where_exp: "c", "c.severity == nil" | size -%}
-      {%- if unrated > 0 %}<span><i class="sev-bg-none"></i>unrated {{ unrated }}</span>{% endif %}
-      {%- if n_posts == 0 or n_proj == 0 %}<span><i class="unx-i"></i>unexplored</span>{% endif %}
+      {%- if unrated > 0 %}<span><i class="sev-bg-none"></i>{{ t.unrated }} {{ unrated }}</span>{% endif %}
+      {%- if n_posts == 0 or n_proj == 0 %}<span><i class="unx-i"></i>{{ t.unexplored }}</span>{% endif %}
     </div>
   </div>
 </div>

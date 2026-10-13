@@ -47,13 +47,32 @@ collections:
 defaults:
   - scope:
       path: ""
+    values:
+      lang: en
+  - scope:
+      path: "tr"
+    values:
+      lang: tr
+      locale: tr_TR
+  - scope:
+      path: ""
       type: cves
     values:
       layout: cve
+      lang: en
       vendor: Microsoft
       excerpt_separator: "<!--more-->"
       seo:
         type: TechArticle
+  # Turkish translations of CVE pages: _cves/tr/<CVE-ID>.md. Only the translated text and
+  # title/description live there; every fact is read from the English entry with the same `cve`.
+  - scope:
+      path: "_cves/tr"
+      type: cves
+    values:
+      lang: tr
+      locale: tr_TR
+      permalink: /tr/cve/:title/
   - scope:
       path: ""
       type: posts

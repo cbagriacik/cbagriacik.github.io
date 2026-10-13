@@ -10,6 +10,10 @@ vendor/
 # resolve its TODOs, then add a "!_cves/<CVE-ID>.md" line here.
 _cves/*
 !_cves/CVE-2026-70338.md
+# Turkish translations follow the same rule: _cves/tr/<CVE-ID>.md, allowlisted one by one.
+!_cves/tr/
+_cves/tr/*
+!_cves/tr/CVE-2026-70338.md
 
 # Local design tooling and notes: never pushed.
 .impeccable/
