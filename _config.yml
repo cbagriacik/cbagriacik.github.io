@@ -1,0 +1,88 @@
+title: Coşkun Bağrıaçık
+tagline: Software Engineer & Independent Security Researcher
+description: >-
+  Coşkun Bağrıaçık (Coskun Bagriacik), Software Engineer & Independent Security
+  Researcher. CVEs acknowledged by the Microsoft Security Response Center, with
+  technical write-ups, blog posts and projects.
+url: https://cbagriacik.github.io
+baseurl: ""
+lang: en
+timezone: UTC
+
+author:
+  name: Coşkun Bağrıaçık
+  url: https://cbagriacik.github.io
+
+github_username: cbagriacik
+linkedin_username: cbagriacik
+avatar: https://github.com/cbagriacik.png
+
+# Used by jekyll-seo-tag and by _includes/jsonld-person.html (sameAs).
+# Add more profile URLs (X, Mastodon, ...) here when you want them linked.
+social:
+  name: Coşkun Bağrıaçık
+  links:
+    - https://github.com/cbagriacik
+    - https://www.linkedin.com/in/cbagriacik/
+
+person:
+  alternate_name: Coskun Bagriacik
+  job_title: Software Engineer & Independent Security Researcher
+  knows_about:
+    - Vulnerability research
+    - Microsoft Windows security
+    - .NET security
+    - PowerShell security
+    - Coordinated vulnerability disclosure
+
+permalink: /blog/:year/:title/
+
+collections:
+  cves:
+    output: true
+    permalink: /cve/:title/
+  projects:
+    output: false
+
+defaults:
+  - scope:
+      path: ""
+      type: cves
+    values:
+      layout: cve
+      vendor: Microsoft
+      excerpt_separator: "<!--more-->"
+      seo:
+        type: TechArticle
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: post
+
+markdown: kramdown
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+  syntax_highlighter_opts:
+    block:
+      line_numbers: true
+
+feed:
+  collections:
+    cves:
+      path: "/cves.xml"
+
+plugins:
+  - jekyll-seo-tag
+  - jekyll-sitemap
+  - jekyll-feed
+
+exclude:
+  - README.md
+  - PRODUCT.md
+  - Gemfile
+  - Gemfile.lock
+  - serve.ps1
+  - vendor
+  - .bundle

@@ -1,0 +1,8 @@
+{%- comment -%}
+  Filter key for one CVE field value. kind: p (product) | i (impact) | y (year).
+  Used both for card data-f tokens and for the #f-<key> targets the xref windows link to.
+{%- endcomment -%}
+{%- if include.kind == 'i' -%}i-{{ site.data.mnemonics[include.value] | default: include.value | slugify }}
+{%- elsif include.kind == 'y' -%}y-{{ include.value }}
+{%- else -%}p-{{ include.value | slugify }}
+{%- endif -%}

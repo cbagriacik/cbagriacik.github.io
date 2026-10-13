@@ -1,0 +1,12 @@
+{%- comment -%} IDA "Names" window: the h2 anchors kramdown generated inside include.html. {%- endcomment -%}
+{%- assign parts = include.html | split: '<h2 id="' -%}
+{%- if parts.size > 1 -%}
+<h2 class="wt">Names</h2>
+<ul class="xl names">
+  {%- for p in parts offset: 1 -%}
+    {%- assign id = p | split: '"' | first -%}
+    {%- assign label = p | split: '>' | slice: 1, 99 | join: '>' | split: '</h2' | first | strip_html | strip -%}
+    <li><a class="x" href="#{{ id }}">{{ label }}</a></li>
+  {%- endfor -%}
+</ul>
+{%- endif -%}

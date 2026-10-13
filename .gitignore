@@ -1,0 +1,16 @@
+_site/
+.jekyll-cache/
+.jekyll-metadata
+.sass-cache/
+.bundle/
+vendor/
+
+# CVE entries are private by default. Only entries listed below with "!" are pushed.
+# To publish one: confirm the vendor advisory is public and your name is on it,
+# resolve its TODOs, then add a "!_cves/<CVE-ID>.md" line here.
+_cves/*
+!_cves/CVE-2026-70338.md
+
+# Local design tooling and notes: never pushed.
+.impeccable/
+PRODUCT.md

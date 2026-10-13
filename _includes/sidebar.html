@@ -1,0 +1,21 @@
+{%- assign n_cves = site.cves | size -%}
+{%- assign n_posts = site.posts | size -%}
+{%- assign n_proj = site.projects | size -%}
+{%- assign section = page.layout | default: 'home' -%}
+<aside class="side">
+  <a class="brand" href="{{ '/' | relative_url }}">
+    <img class="avatar" src="{{ site.avatar }}?size=80" width="40" height="40" alt="">
+    <span class="brand-text"><span class="who">{{ site.author.name }}</span><span class="what">{{ site.tagline }}</span></span>
+  </a>
+  <div class="win-title" aria-hidden="true"><span>Functions</span><span>len</span></div>
+  <nav class="fn" aria-label="Sections">
+    <a href="{{ '/#cves' | relative_url }}"{% if section == 'cve' %} class="on" aria-current="true"{% endif %}>cves <span>{{ n_cves | prepend: '0000' | slice: -4, 4 }}</span></a>
+    <a href="{{ '/#blog' | relative_url }}"{% if section == 'post' %} class="on" aria-current="true"{% endif %}>blog <span>{{ n_posts | prepend: '0000' | slice: -4, 4 }}</span></a>
+    <a href="{{ '/#projects' | relative_url }}">projects <span>{{ n_proj | prepend: '0000' | slice: -4, 4 }}</span></a>
+  </nav>
+  <div class="soc">
+    <a class="x" href="https://github.com/{{ site.github_username }}" target="_blank" rel="me noopener">github.com/{{ site.github_username }} ↗</a><br>
+    <a class="x" href="https://www.linkedin.com/in/{{ site.linkedin_username }}/" target="_blank" rel="me noopener">linkedin.com/in/{{ site.linkedin_username }} ↗</a><br>
+    <a class="x" href="{{ '/cves.xml' | relative_url }}" target="_blank" rel="noopener">cves.xml ↗</a>
+  </div>
+</aside>

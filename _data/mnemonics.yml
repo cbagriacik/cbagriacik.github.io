@@ -1,0 +1,8 @@
+# Vendor impact wording -> the listing's mnemonic column.
+"Elevation of Privilege": eop
+"Remote Code Execution": rce
+"Denial of Service": dos
+"Information Disclosure": info
+"Security Feature Bypass": sfb
+"Spoofing": spoof
+"Tampering": tamper

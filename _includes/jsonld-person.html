@@ -1,0 +1,13 @@
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "@id": {{ site.url | append: '/#person' | jsonify }},
+  "name": {{ site.author.name | jsonify }},
+  "alternateName": {{ site.person.alternate_name | jsonify }},
+  "url": {{ site.url | jsonify }},
+  "jobTitle": {{ site.person.job_title | jsonify }},
+  "knowsAbout": {{ site.person.knows_about | jsonify }},
+  "sameAs": {{ site.social.links | jsonify }}
+}
+</script>
