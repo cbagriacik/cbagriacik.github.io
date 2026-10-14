@@ -6,7 +6,7 @@
 {%- assign t = site.data.i18n[lang] -%}
 {%- assign m = site.cves | where: "cve", page.cve | where: "lang", "en" | first -%}
 {%- unless m %}{% assign m = page %}{% endunless -%}
-{%- assign en_cves = site.cves | where: "lang", "en" -%}
+{%- assign en_cves = site.cves | where: "lang", "en" | where_exp: "c", "c.redirect_to_cve == nil" -%}
 {%- assign same_product = en_cves | where: "product", m.product -%}
 {%- assign same_impact = en_cves | where: "impact", m.impact -%}
 {%- assign day = m.date | date: '%Y-%m-%d' -%}

@@ -11,7 +11,8 @@ layout: default
 {%- assign body = content | strip_html | strip -%}
 
 <div class="ln"><span class="a">.ack:{{ m.date | date: '%Y-%m-%d' }}</span><span class="crumb"><a href="{{ t.home | append: '#cves' | relative_url }}">cves</a> <span class="c">→</span> <span class="c">{{ m.cve }}</span></span></div>
-<div class="ln"><span class="a"></span><h1 class="cve-id"><span class="hl">{{ m.cve }}</span></h1></div>
+<div class="ln"><span class="a"></span><h1 class="cve-id">{% if m.also_cve %}<span class="hl">{{ m.also_cve }}</span> {% endif %}<span class="hl">{{ m.cve }}</span></h1></div>
+{% if m.also_cve %}<div class="ln"><span class="a">.text:0002</span><span class="c">; {{ m.also_cve }} {{ t.also_note }}</span></div>{% endif %}
 {% if m.vendor_title %}<div class="ln"><span class="a">.text:0001</span><p class="vt">{{ m.vendor_title }}</p></div>{% endif %}
 
 <div class="ln"><span class="a"></span>
@@ -30,6 +31,7 @@ layout: default
       {% if advisory != "" %}<li><a href="{{ advisory }}" target="_blank" rel="noopener">{{ m.vendor }} {{ t.advisory }} ↗</a></li>{% endif %}
       <li><a href="https://nvd.nist.gov/vuln/detail/{{ m.cve }}" target="_blank" rel="noopener">NVD ↗</a></li>
       <li><a href="https://www.cve.org/CVERecord?id={{ m.cve }}" target="_blank" rel="noopener">CVE.org ↗</a></li>
+      {% if m.also_cve %}<li class="sib"><a href="https://msrc.microsoft.com/update-guide/vulnerability/{{ m.also_cve }}" target="_blank" rel="noopener">{{ m.also_cve }} advisory ↗</a></li>{% endif %}
     </ul>
   </div>
 </div>

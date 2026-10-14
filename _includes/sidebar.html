@@ -1,7 +1,7 @@
 {%- assign lang = page.lang | default: site.lang -%}
 {%- assign t = site.data.i18n[lang] -%}
 {%- assign home = t.home -%}
-{%- assign en_cves = site.cves | where: "lang", "en" -%}
+{%- assign en_cves = site.cves | where: "lang", "en" | where_exp: "c", "c.redirect_to_cve == nil" -%}
 {%- assign n_cves = en_cves | size -%}
 {%- assign n_posts = site.posts | where: "lang", lang | size -%}
 {%- assign n_proj = site.projects | size -%}

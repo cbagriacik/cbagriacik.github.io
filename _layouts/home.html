@@ -3,7 +3,7 @@ layout: default
 ---
 {%- assign lang = page.lang | default: site.lang -%}
 {%- assign t = site.data.i18n[lang] -%}
-{%- assign cves = site.cves | where: "lang", "en" | sort: "date" | reverse -%}
+{%- assign cves = site.cves | where: "lang", "en" | where_exp: "c", "c.redirect_to_cve == nil" | sort: "date" | reverse -%}
 {%- assign posts = site.posts | where: "lang", lang -%}
 {%- assign projects = site.projects | sort: "order" -%}
 

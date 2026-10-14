@@ -1,0 +1,21 @@
+---
+layout: null
+---
+{%- assign lang = page.lang | default: site.lang -%}
+{%- assign tgt = site.cves | where: "cve", page.redirect_to_cve | where: "lang", lang | first -%}
+{%- assign url = tgt.url -%}
+<!doctype html>
+<html lang="{{ lang }}">
+<head>
+  <meta charset="utf-8">
+  <title>{{ page.cve }} → {{ page.redirect_to_cve }}</title>
+  <link rel="canonical" href="{{ url | absolute_url }}">
+  <meta http-equiv="refresh" content="0; url={{ url | relative_url }}">
+  <meta name="robots" content="noindex, follow">
+  <meta name="color-scheme" content="dark">
+  <style>html{background:#1a1b1f;color:#d7d9df;font:16px/1.6 system-ui,sans-serif}body{margin:0;display:grid;place-items:center;min-height:100vh}a{color:#84c98f}</style>
+</head>
+<body>
+  <p>{{ page.cve }} is covered together with <a href="{{ url | relative_url }}">{{ page.redirect_to_cve }}</a>. Redirecting…</p>
+</body>
+</html>

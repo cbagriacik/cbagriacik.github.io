@@ -1,6 +1,6 @@
 {%- assign lang = page.lang | default: site.lang -%}
 {%- assign t = site.data.i18n[lang] -%}
-{%- assign sorted = site.cves | where: "lang", "en" | sort: "date" | reverse -%}
+{%- assign sorted = site.cves | where: "lang", "en" | where_exp: "c", "c.redirect_to_cve == nil" | sort: "date" | reverse -%}
 {%- assign by_product = sorted | group_by: "product" | sort: "size" | reverse -%}
 {%- assign by_impact = sorted | group_by: "impact" | sort: "size" | reverse -%}
 {%- assign by_year = sorted | group_by_exp: "c", "c.date | date: '%Y'" | sort: "name" | reverse -%}

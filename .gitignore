@@ -9,11 +9,22 @@ vendor/
 # To publish one: confirm the vendor advisory is public and your name is on it,
 # resolve its TODOs, then add a "!_cves/<CVE-ID>.md" line here.
 _cves/*
+# Allowlisted CVE pages (published). Everything else under _cves/ stays local.
 !_cves/CVE-2026-70338.md
-# Turkish translations follow the same rule: _cves/tr/<CVE-ID>.md, allowlisted one by one.
+!_cves/CVE-2026-96960.md
+!_cves/CVE-2026-96251.md
+!_cves/CVE-2026-85817.md
+!_cves/CVE-2026-70190.md
+!_cves/CVE-2026-83736.md
+# Turkish translations, allowlisted one by one.
 !_cves/tr/
 _cves/tr/*
 !_cves/tr/CVE-2026-70338.md
+!_cves/tr/CVE-2026-96960.md
+!_cves/tr/CVE-2026-96251.md
+!_cves/tr/CVE-2026-85817.md
+!_cves/tr/CVE-2026-70190.md
+!_cves/tr/CVE-2026-83736.md
 
 # Local design tooling and notes: never pushed.
 .impeccable/

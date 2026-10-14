@@ -138,6 +138,9 @@ aside.panel .wt, .panel-inline .wt { font: 500 11px/1 var(--mono); letter-spacin
 .crumb a:hover { color: var(--hl); }
 .cve-id { font: 800 clamp(2.3rem, 4.4vw, 4rem)/1.05 var(--mono); letter-spacing: -0.04em; color: var(--head); margin: .5rem 0 .35rem; overflow-wrap: anywhere; }
 .cve-id .hl { background: var(--hl); color: #111; padding: 0 .12em; border-radius: 3px; }
+.cve-id .hl + .hl { margin-left: .4rem; }
+.card h3 .id + .id { margin-left: .4rem; }
+.xrefs-out .sib { margin-left: .25rem; }
 .post-title { font: 800 clamp(1.9rem, 3.6vw, 3rem)/1.12 var(--sans); letter-spacing: -0.025em; color: var(--head); margin: .5rem 0 .6rem; text-wrap: balance; max-width: 48rem; }
 .vt { font: 400 1.3rem/1.4 var(--sans); margin: 0; color: var(--ink); }
 .vt a.x { font-family: var(--sans); }
